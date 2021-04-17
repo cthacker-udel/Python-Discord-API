@@ -7,6 +7,7 @@ class DiscordClient:
         self.redirect_uri = ''
         self.access_token = ''
         self.expires_in = 0
+        self.global_commands = {}
 
 
     def create_global_application(self,name,description,options=None,default_permission=None):
@@ -35,6 +36,7 @@ class DiscordClient:
 
     def add_redirect_uri(self,uri):
         self.redirect_uri = uri
+
 
     def add_client_permissions(self,permission):
         self.permissions = permission
