@@ -245,6 +245,30 @@ def delete_followup_message(client,bot,messageId):
 
     return response.status_code == 204
 
+def get_guild_application_command_permissions(client,bot):
+
+    url = base_url_api + '/applications/{}/guilds/{}/commands/permissions'
+
+    response = requests.get(url,headers=get_bot_headers(bot))
+
+    return response.status_code == 200
+
+def edit_application_command_permissions(client,bot,commandId):
+
+    url = base_url_api + '/applications/{}/guilds/{}/commands/{}/permissions'.format(client.client_id,client.guild_id,commandId)
+
+    response = requests.put(url,headers=get_bot_headers(bot))
+
+    return response.status_code == 200
+
+def batch_edit_application_command_permissions(client,bot):
+
+    url = base_url_api + '/applications/{}/guilds/{}/commands/permissions'.format(client.client_id,client.guild_id)
+
+    response = requests.put(url,headers=get_bot_headers(bot))
+
+    return response.status_code == 200
+
 
 
 
