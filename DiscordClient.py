@@ -7,7 +7,8 @@ class DiscordClient:
         self.redirect_uri = ''
         self.access_token = ''
         self.expires_in = 0
-        self.global_commands = {}
+        self.commands = {}
+        self.guild_id = ''
 
 
     def create_global_application(self,name,description,options=None,default_permission=None):

@@ -55,12 +55,12 @@ def create_global_application_command(client,bot,commandname,commanddescription)
 
     response = requests.post(url,headers=headers,json=json_params).json()
 
-    client.global_commands[response['name']] = response['id']
+    client.commands[response['name']] = response['id']
 
     return len(response) > 0
 
 def get_global_application_command(client,bot,command_name):
-    url = base_url_api + '/applications/{}/commands/{}'.format(client.client_id,client.global_commands[command_name])
+    url = base_url_api + '/applications/{}/commands/{}'.format(client.client_id, client.commands[command_name])
 
     headers = get_bot_headers(bot)
 
@@ -74,7 +74,7 @@ def edit_global_application_command(client,bot,original_command_name,new_command
 
     headers = get_bot_headers(bot)
     
-    url = base_url_api + '/applications/{}/commands/{}'.format(client.client_id,client.global_commands[original_command_name])
+    url = base_url_api + '/applications/{}/commands/{}'.format(client.client_id, client.commands[original_command_name])
     
     response = requests.patch(url,data=params,headers=headers).json()
     
@@ -84,11 +84,74 @@ def delete_global_application_command(client,bot,command_name):
     
     headers = get_bot_headers(bot)
     
-    url = base_url_api + "/applications/{}/commands/{}".format(client.client_id,client.global_commands[command_name])
+    url = base_url_api + "/applications/{}/commands/{}".format(client.client_id, client.commands[command_name])
     
     response = requests.delete(url,headers=headers)
     
     return response.status_code == 200
+
+
+def get_guild_application_commands(client,bot):
+
+    headers = get_bot_headers(bot)
+
+    url = base_url_api + '/applications/{}/guilds/{}/commands'.format(client.client_id,client.guild_id)
+
+    response = requests.get(url,headers=headers).json()
+
+    pprint(response)
+
+    return len(response) > 0
+
+def bulk_overwrite_global_application_commands(client,bot):
+
+    headers = get_bot_headers(bot)
+
+    url = base_url_api + '/applications/{}/commands'.format(client.client_id)
+
+    response = requests.put(url,headers=headers)
+
+    return response.status_code == 200
+
+
+def create_guild_application_command(client,bot):
+
+    headers = get_bot_headers(bot)
+
+    client.commands['name'] = 'command1'
+
+    client.commands['description'] = 'description1'
+
+    data = client.commands
+
+    url = base_url_api + "/applications/{}/guilds/{}/commands".format(client.client_id,client.guild_id)
+
+    response = requests.post(url,headers=headers,data=data).json()
+
+    return len(response) > 0
+
+def get_guild_application_command(client,bot,name):
+
+    if name not in client.command:
+        return False
+    else:
+        url = base_url_api + "/applications/{}/guilds/{}/commands/{}".format(client.client_id,client.guild_id,name)
+
+        response = requests.get(url,headers=get_bot_headers(bot))
+
+        return len(response) > 0
+
+def edit_guild_application_command(client,bot,name):
+
+    if name not in client.command:
+        return False
+    else:
+        url = base_url_api + "/applications/{}/guilds/{}/commands/{}".format(client.client_id,client.guild_id,name)
+
+        response = requests.get(url,headers=get_bot_headers(bot))
+
+        return len(response) > 0
+
 
     
 
