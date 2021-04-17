@@ -6,7 +6,11 @@ from pprint import pprint
 base_url_api = 'https://discord.com/api/v8'
 base_url_auth = 'https://discord.com/api'
 
-### AUTH - SECTION
+"""
+
+    AUTHORIZATION METHODS
+
+"""
 
 def get_bot_headers(bot):
     return {'Authorization': 'Bot {}'.format(bot.token),'Content-Type': 'application/json'}
@@ -34,7 +38,12 @@ def get_client_token(client):
     client.expires_in = request['expires_in']
 
 
-### Get Commands Methods
+"""
+
+    GLOBAL APPLICATIONS METHODS
+
+
+"""
 
 
 def get_global_application_commands(client,bot):
@@ -165,13 +174,77 @@ def delete_guild_application(client,bot,name):
         return response.status_code == 200
 
 
-def builk_overwrite_guild_application_commands(client,bot):
+def bulk_overwrite_guild_application_commands(client,bot):
 
     url = base_url_api + "/applications/{}/guilds/{}/commands".format(client.client_id,client.guild_id)
 
     response = requests.put(url,headers=get_bot_headers(bot))
 
     return response.status_code == 200
+
+
+"""
+
+    Interface API
+
+"""
+
+def create_interaction_response(client,bot):
+
+    url = base_url_api + '/interactions/{}/{}/callback'.format(client.interaction_id,client.interaction_token)
+
+    response = requests.post(url,headers=get_bot_headers(bot))
+
+    return response.status_code == 200
+
+
+def edit_original_interaction_response(client,boy):
+
+    url = base_url_api + '/webhooks/{}/{}/messages/@original'.format(client.client_id,client.interaction_token)
+
+    response = requests.patch(url,headers=get_bot_headers(bot))
+
+    return response.status_code == 200
+
+def delete_original_interaction_response(client,bot):
+
+    url = base_url_api + "/webhooks/{}/{}/mesasges/@original".format(client.client_id,client.interaction_id)
+
+    response = requests.delete(url,headers=get_bot_headers(bot))
+
+    return response.status_code == 200
+
+"""
+
+    FOLLOW MESSAGE API
+
+"""
+
+def create_followup_message(client,bot):
+
+    url = base_url_api + '/webhooks/{}/{}'.format(client.client_id,client.interaction_token)
+
+    response = requests.post(url,headers=get_bot_headers(bot))
+
+    return response.status_code == 200
+
+
+def edit_followup_message(client,bot,messageId):
+
+    url = base_url_api + '/webhooks/{}/{}/messages/{}'.format(client.client_id,client.interaction_token,messageId)
+
+    response = requests.patch(url,headers=get_bot_headers(bot))
+
+    return response.status_code == 200
+
+def delete_followup_message(client,bot,messageId):
+
+    url = base_url_api + '/webhooks/{}/{}/messages/{}'.format(client.client_id,client.interaction_token,messageId)
+
+    response = requests.delete(url,headers=get_bot_headers(bot))
+
+    return response.status_code == 204
+
 
 
 

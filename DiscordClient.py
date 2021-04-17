@@ -9,6 +9,8 @@ class DiscordClient:
         self.expires_in = 0
         self.commands = {}
         self.guild_id = ''
+        self.interaction_id = ''
+        self.interaction_token = ''
 
 
     def create_global_application(self,name,description,options=None,default_permission=None):
