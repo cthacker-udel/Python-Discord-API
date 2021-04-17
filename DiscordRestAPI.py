@@ -148,9 +148,33 @@ def edit_guild_application_command(client,bot,name):
     else:
         url = base_url_api + "/applications/{}/guilds/{}/commands/{}".format(client.client_id,client.guild_id,name)
 
-        response = requests.get(url,headers=get_bot_headers(bot))
+        response = requests.patch(url,headers=get_bot_headers(bot))
 
         return len(response) > 0
+
+
+def delete_guild_application(client,bot,name):
+
+    if name not in client.command:
+        return False
+    else:
+        url = base_url_api + "/applications/{}/guilds/{}/commands/{}".format(client.client_id,client.guild_id,name)
+
+        response = requests.delete(url,headers=get_bot_headers(bot))
+
+        return response.status_code == 200
+
+
+def builk_overwrite_guild_application_commands(client,bot):
+
+    url = base_url_api + "/applications/{}/guilds/{}/commands".format(client.client_id,client.guild_id)
+
+    response = requests.put(url,headers=get_bot_headers(bot))
+
+    return response.status_code == 200
+
+
+
 
 
     
